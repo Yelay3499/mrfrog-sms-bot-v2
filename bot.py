@@ -12,7 +12,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 TOKEN = "8905904062:AAGICQMVC0UXrATqaWOpq0NEFrGL_1JcDR0"
 BASE_URL = f"https://api.telegram.org/bot{TOKEN}"
 # Render ကပေးတဲ့ ကိုယ့် URL အသစ်ကို ဒီမှာ ထည့်ပေးပါ
-YOUR_URL = "https://mrfrog-sms-bot-2.onrender.com" 
+YOUR_URL = "https://mrfrog-sms-bot-v2.onrender.com" 
 
 USER_STATES = {}
 PHONE, AMOUNT, TIME_STATE = 1, 2, 3
