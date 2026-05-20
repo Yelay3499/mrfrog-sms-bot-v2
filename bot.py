@@ -8,7 +8,7 @@ import threading
 from datetime import datetime, timedelta
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-TOKEN = "8954431979:AAFCCuTqkhvF_w6roqD3bOsVpkxdUMVim70"
+TOKEN = "8905904062:AAGICQMVC0UXrATqaWOpq0NEFrGL_1JcDR0"
 BASE_URL = f"https://api.telegram.org/bot{TOKEN}"
 YOUR_URL = "https://mrfrog-sms-bot-v2.onrender.com" 
 
