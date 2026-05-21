@@ -103,7 +103,7 @@ def handle_update(update):
         start_msg = (
             f"မင်္ဂလာပါ🖕 {first_name}!\n"
             "RFrOG SMS ATACK BoTမှကြိုဆိုပါတယ်🫡\n\n"
-            "တိုက်ခိုက်မည့်ဖုန်း (eg. 09123456789):"
+            "တိုက်ခိုက်မည့်ဖုန်း (eg. 09၅၉8ကြွတ်ကြွတ်အိတ်):"
         )
         send_message(chat_id, start_msg)
         return
